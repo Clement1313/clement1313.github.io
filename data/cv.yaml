@@ -1,19 +1,43 @@
-# PLACEHOLDER content: replace with real information. Keep it public-safe (no phone/address).
 title: Curriculum Vitae
-summary: Short professional summary goes here.
-pdf: cv.pdf   # file in static/; remove this line if there is no PDF yet
+summary: >
+  Engineering student at EPITA with a major in Image (image processing), with
+  hands-on experience in OCR, web development and REST APIs.
+contact:
+  - { label: GitHub, url: "https://github.com/Clement1313", text: Clement1313 }
+  - { label: LinkedIn, url: "https://www.linkedin.com/in/clement-gregoire/", text: clement-gregoire }
 experience:
-  - role: Job title
-    company: Company
-    period: 2024 - Present
+  - role: Final-year internship (project supervised by the company)
+    company: Groupe Covea (parent company of MMA, GMF and MAAF)
+    period: May 2026 - January 2027
     points:
-      - What you did and the result.
+      - OCR on car accident reports ("constats amiables").
+      - Built an image preprocessing pipeline with OpenCV.
+      - Benchmarked several OCR tools.
+  - role: Full-stack developer intern
+    company: Commanders Act
+    period: September 2025 - January 2026
+    points:
+      - Developed web interfaces in Vue.js.
+      - Refactored and optimised a REST API.
 education:
-  - degree: Degree
-    school: School
-    period: 2020 - 2024
+  - degree: Engineering degree in computer science, Image major (image processing from 2026)
+    school: EPITA
+    period: 2022 - 2027
+    points:
+      - Second year of the engineering cycle in 2024-2025.
+      - Exchange semester at Ahlia University, Bahrain (January - May 2024).
+      - Preparatory classes, 2022-2024.
+  - degree: Scientific baccalaureate (Mathematics and Physics-Chemistry, advanced maths option, English European option)
+    school: Lycée Blaise Pascal, Colmar
+    period: 2019 - 2022
+certifications:
+  - Baccalauréat
 skills:
-  - Python
+  - { group: Machine learning, tags: [scikit-learn] }
+  - { group: Image processing, tags: [scikit-image, OpenCV] }
+  - { group: Deep learning, tags: [PyTorch] }
+  - { group: Development, tags: [Python, C++] }
 languages:
   - { name: French, level: Native }
-  - { name: English, level: Professional }
+  - { name: English, level: B2 (TOEIC 915/990) }
+interests: [Sport, Music, Reading]

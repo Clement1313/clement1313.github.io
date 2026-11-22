@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>{{ cv.title }}</h1>
+{% if cv.headline %}<p class="lead">{{ cv.headline }}</p>{% endif %}
 <p>{{ cv.summary }}</p>
+<ul class="contact">
+  {% for c in cv.contact %}<li><a href="{{ c.url }}">{{ c.label }}</a>: {{ c.text }}</li>{% endfor %}
+</ul>
 {% if cv.pdf %}<p><a href="{{ site.base_url }}/{{ cv.pdf }}" download>Download PDF</a></p>{% endif %}
 <h2>Experience</h2>
 {% for e in cv.experience %}
@@ -12,10 +16,20 @@
 {% endfor %}
 <h2>Education</h2>
 {% for e in cv.education %}
-<section class="entry"><h3>{{ e.degree }}, {{ e.school }} <small>{{ e.period }}</small></h3></section>
+<section class="entry">
+  <h3>{{ e.degree }}, {{ e.school }} <small>{{ e.period }}</small></h3>
+  {% if e.points %}<ul>{% for pt in e.points %}<li>{{ pt }}</li>{% endfor %}</ul>{% endif %}
+</section>
 {% endfor %}
+<h2>Certifications</h2>
+<ul>{% for c in cv.certifications %}<li>{{ c }}</li>{% endfor %}</ul>
 <h2>Skills</h2>
-<p class="tags">{% for s in cv.skills %}<span>{{ s }}</span>{% endfor %}</p>
+{% for s in cv.skills %}
+<p><strong>{{ s.group }}</strong></p>
+<p class="tags">{% for i in s.tags %}<span>{{ i }}</span>{% endfor %}</p>
+{% endfor %}
 <h2>Languages</h2>
 <ul>{% for l in cv.languages %}<li>{{ l.name }}: {{ l.level }}</li>{% endfor %}</ul>
+<h2>Interests</h2>
+<p class="tags">{% for i in cv.interests %}<span>{{ i }}</span>{% endfor %}</p>
 {% endblock %}
