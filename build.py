@@ -2,6 +2,7 @@
 
 import argparse
 import csv
+import json
 import re
 import shutil
 import subprocess
@@ -132,7 +133,11 @@ def build(skip_notebooks: bool = False) -> None:
         autoescape=select_autoescape(["html"]),
     )
     ctx = {"site": site}
-    write(env, "home.html", "index.html", **ctx, page_title=site["name"])
+    playlist_file = ROOT / "data" / "playlist.json"
+    playlist = (
+        json.loads(playlist_file.read_text(encoding="utf-8")) if playlist_file.exists() else None
+    )
+    write(env, "home.html", "index.html", **ctx, playlist=playlist, page_title=site["name"])
     write(env, "cv.html", "cv/index.html", **ctx, cv=cv, page_title="CV")
     write(
         env, "projects.html", "projects/index.html", **ctx, projects=projects, page_title="Projects"

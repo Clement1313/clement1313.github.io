@@ -91,3 +91,14 @@ def test_set_admin_password_hash_matches_algorithm():
     salt = bytes.fromhex("00" * 16)
     expected = hashlib.pbkdf2_hmac("sha256", b"x", salt, 1000, dklen=32).hex()
     assert sap.hash_password("x", salt, 1000) == expected
+
+
+def test_playlist_data_is_valid():
+    import json
+
+    data = json.loads((build.ROOT / "data" / "playlist.json").read_text(encoding="utf-8"))
+    assert data["tracks"]
+    assert all({"id", "title", "artist"} <= set(t) for t in data["tracks"])
+    build.build(skip_notebooks=True)
+    html = (build.DIST / "index.html").read_text(encoding="utf-8")
+    assert "music-frame" in html and "autoplay" not in html.replace("no autoplay", "")

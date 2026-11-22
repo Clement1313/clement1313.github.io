@@ -1,26 +1,49 @@
 {% extends "base.html" %}
+{% block body_class %}home{% endblock %}
 {% block content %}
-<section class="hero">
-  <p class="eyebrow">Hello, I'm</p>
-  <h1>{{ site.name }}</h1>
-  <p class="lead">{{ site.tagline }}</p>
-  <div class="actions">
-    <a class="btn primary" href="{{ site.base_url }}/cv/">View my CV</a>
-    <a class="btn" href="{{ site.base_url }}/concerts/">Explore my concerts</a>
+<div class="home-grid">
+  <div class="home-main">
+    <section class="hero">
+      <p class="eyebrow">Hello, I'm</p>
+      <h1>{{ site.name }}</h1>
+      <p class="lead">{{ site.tagline }}</p>
+      <div class="actions">
+        <a class="btn primary" href="{{ site.base_url }}/cv/">View my CV</a>
+        <a class="btn" href="{{ site.base_url }}/concerts/">Explore my concerts</a>
+      </div>
+      <p class="social">
+        {% for link in site.links %}<a href="{{ link.url }}" rel="me">{{ link.label }}</a>{% endfor %}
+      </p>
+    </section>
+    <section aria-labelledby="explore">
+      <h2 id="explore" class="sr-only">Explore</h2>
+      <ul class="cards compact">
+        {% for h in site.highlights %}
+        <li class="card">
+          <h3><a class="card-link" href="{{ site.base_url }}{{ h.path }}">{{ h.title }}</a></h3>
+          <p>{{ h.text }}</p>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
   </div>
-  <p class="social">
-    {% for link in site.links %}<a href="{{ link.url }}" rel="me">{{ link.label }}</a>{% endfor %}
-  </p>
-</section>
-<section aria-labelledby="explore">
-  <h2 id="explore" class="section-title">Explore</h2>
-  <ul class="cards">
-    {% for h in site.highlights %}
-    <li class="card">
-      <h3><a class="card-link" href="{{ site.base_url }}{{ h.path }}">{{ h.title }}</a></h3>
-      <p>{{ h.text }}</p>
-    </li>
-    {% endfor %}
-  </ul>
-</section>
+
+  {% if playlist and playlist.tracks %}
+  <section class="music" aria-labelledby="music-title">
+    <div class="music-card">
+      <div class="music-head">
+        <h2 id="music-title" class="music-title">On repeat</h2>
+        <button type="button" id="music-shuffle" aria-label="Play another random track" hidden>Next</button>
+      </div>
+      <p class="music-intro">A random track from my playlist <a href="{{ playlist.url }}">{{ playlist.title }}</a>. Press play, nothing starts on its own.</p>
+      <iframe id="music-frame" class="player" title="Deezer player" loading="lazy"
+              allow="encrypted-media; clipboard-write"></iframe>
+      <p class="music-meta"><span class="marquee" id="music-marquee"><span id="music-label" aria-live="polite"></span></span></p>
+      <noscript><p><a href="{{ playlist.url }}">Open the playlist on Deezer</a></p></noscript>
+    </div>
+    <script type="application/json" id="playlist-data">{{ playlist.tracks|tojson }}</script>
+    <script src="{{ site.base_url }}/js/music.js" defer></script>
+  </section>
+  {% endif %}
+</div>
 {% endblock %}

@@ -54,6 +54,11 @@ Static page, not linked in the nav, `noindex`. It edits `data/concerts.csv` by c
 - The password is only a client-side gate: `data/admin.yaml` holds a salted PBKDF2 hash (never the plaintext). Change it with `uv run python scripts/set_admin_password.py`. It does **not** protect the data (the CSV is public in the repo); the GitHub token is the real protection. Never write the password in code, docs or tests.
 - Validation rules in `static/js/admin.js` must match what `build.py` accepts (dates, counts, prices), because a bad value breaks the build.
 
+## Music widget (home page)
+`static/js/music.js` picks a random track from `data/playlist.json` on each page load (never the same one twice in a row, remembered in localStorage) and loads the Deezer widget in an iframe. **Never enable autoplay** (no autoplay param, no `autoplay` in the iframe `allow`).
+- The browser can't call the Deezer API (no CORS), so `scripts/fetch_playlist.py` refreshes `data/playlist.json` at build time (the deploy workflow runs it; if Deezer is unreachable the committed copy is used). The playlist must stay public.
+- To change playlist, edit `PLAYLIST_ID` in that script and rerun it.
+
 ## Project skills
 - `add-project`: add a mini-project (static or interactive marimo)
 - `update-cv`: edit CV content and PDF

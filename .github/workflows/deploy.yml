@@ -19,6 +19,7 @@ jobs:
       - run: uv sync
       - run: uv run ruff check .
       - run: uv run pytest
+      - run: uv run python scripts/fetch_playlist.py  # refresh the Deezer track list; keeps the committed copy if Deezer is unreachable
       - run: uv run python build.py
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
