@@ -30,8 +30,8 @@
     <tr>
       <th scope="row">{{ g.artist }}</th>
       <td>{{ c.date or "—" }}</td>
-      <td>{{ c.venue or "—" }}{% if c.city %}, {{ c.city }}{% endif %}</td>
-      <td class="num">{% if c.price is not none %}{{ "%.2f"|format(c.price) }} €{% else %}—{% endif %}</td>
+      <td>{% if c.festival %}{{ c.festival }}{% else %}{{ c.venue or "—" }}{% endif %}{% if c.city %}, {{ c.city }}{% endif %}</td>
+      <td class="num">{% if c.price is not none and c.counts %}{{ "%.2f"|format(c.price) }} €{% elif c.shared %}festival ticket{% else %}—{% endif %}</td>
       <td class="num">{{ g.total }}</td>
     </tr>
     {% endfor %}

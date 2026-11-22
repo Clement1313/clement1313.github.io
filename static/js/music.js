@@ -9,7 +9,8 @@
   const KEY = "music:last-track";
   const read = () => { try { return localStorage.getItem(KEY); } catch { return null; } };
   const write = (v) => { try { localStorage.setItem(KEY, v); } catch { /* storage blocked: fine */ } };
-  const theme = () => (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  const theme = () =>
+    document.documentElement.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
 
   // Random track, never the same one twice in a row (also across refreshes and visits).
   function pick() {

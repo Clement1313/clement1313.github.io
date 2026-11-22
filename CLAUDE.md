@@ -38,7 +38,7 @@ dist/               # generated, git-ignored
 - Code, identifiers and site text in English.
 - Content goes in `data/*.yaml`, never hard-coded in templates or `build.py`.
 - Every page needs `<title>`, meta description and Open Graph tags (set from data).
-- Plain, responsive CSS with light/dark support via `prefers-color-scheme`; semantic HTML, alt text on images, readable contrast, keyboard navigation.
+- Plain, responsive CSS. Light/dark: follows the system, the header button overrides it (`data-theme` on `<html>`, set by `static/js/theme.js` loaded in `<head>` to avoid a flash, choice kept in localStorage). Any new colour must come from the CSS variables, so both themes work; semantic HTML, alt text on images, readable contrast, keyboard navigation.
 - Links must work under the site root; use the `base_url` from `site.yaml` rather than hard-coded absolute paths.
 - Load heavy assets (Plotly, marimo/WASM) only on the pages that use them.
 - No secrets, no unpublished drafts and no private data in the repo (it is public). Only put public contact info in the CV.

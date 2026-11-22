@@ -49,10 +49,15 @@ def load_concerts() -> list[dict]:
     artist name are grouped. "Nombre de concert" is the total number of shows for the artist (use
     the highest value); concerts with no row of their own are reported as "undocumented".
     Skips test rows and rows whose count is explicitly 0.
+
+    Festivals: rows with the same "Festival" name and the same year share ONE ticket. Its price is
+    counted once (the first row that has a price, in file order): that row gets counts=True, the
+    other rows of the festival get shared=True (displayed as "festival ticket", not summed).
     """
     with (ROOT / "data" / "concerts.csv").open(encoding="utf-8", newline="") as f:
         rows = list(csv.DictReader(f))
     groups: dict[str, dict] = {}
+    paid_festivals: set[str] = set()
     for index, row in enumerate(rows):
         artist = (row.get("Artiste") or "").strip()
         raw_count = (row.get("Nombre de concert") or "").strip()
@@ -63,16 +68,34 @@ def load_concerts() -> list[dict]:
         )
         group["declared"] = max(group["declared"], int(raw_count or 1))
         group["order"] = index
+        date = parse_date(row.get("Date") or "")
+        price = parse_price(row.get("Co\u00fbt") or "")
+        festival = (row.get("Festival") or "").strip()
+        key = f"{festival.casefold()}|{date[:4]}" if festival else ""
+        counts = price is not None
+        if key:
+            counts = price is not None and key not in paid_festivals
+            if counts:
+                paid_festivals.add(key)
         group["concerts"].append(
             {
-                "date": parse_date(row.get("Date") or ""),
+                "date": date,
                 "venue": (row.get("Salle") or "").strip(),
                 "city": (row.get("Ville") or "").strip(),
-                "price": parse_price(row.get("Co\u00fbt") or ""),
+                "price": price,
+                "festival": festival,
+                "festival_key": key,
+                "counts": counts,
             }
         )
     result = []
     for group in sorted(groups.values(), key=lambda g: g["order"]):
+        for c in group["concerts"]:
+            # Another row of the same festival carries the ticket price.
+            c["shared"] = (
+                bool(c["festival_key"]) and not c["counts"] and c["festival_key"] in paid_festivals
+            )
+            del c["festival_key"]
         concerts = group["concerts"][::-1]  # newest first
         total = max(group["declared"], len(concerts))
         result.append(

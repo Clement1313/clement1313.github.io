@@ -10,7 +10,7 @@
   document.querySelector("[data-js]").hidden = false;
 
   const yearOf = (c) => c.date.slice(0, 4);
-  const venueOf = (c) => [c.venue, c.city].filter(Boolean).join(", ");
+  const venueOf = (c) => [c.festival || c.venue, c.city].filter(Boolean).join(", ");
   const years = [...new Set(groups.flatMap((g) => g.concerts.map(yearOf)).filter(Boolean))].sort();
   if (years.length) years.forEach((y) => yearSel.add(new Option(y, y)));
   else yearSel.closest("label").hidden = true;
@@ -26,7 +26,8 @@
     return e;
   };
   const cell = (text, cls) => el("td", cls, text);
-  const price = (c) => (c.price === null ? "—" : `${c.price.toFixed(2)} €`);
+  // A festival ticket is paid once: only the row that carries it shows (and sums) the price.
+  const price = (c) => (c.price !== null && c.counts ? `${c.price.toFixed(2)} €` : c.shared ? "festival ticket" : "—");
 
   const stat = (label, value) => {
     const d = el("div", "stat");
@@ -64,7 +65,7 @@
 
   function sortValue(g, key) {
     const latest = g.concerts[0];
-    return { artist: g.artist, date: latest.date, venue: venueOf(latest), price: latest.price,
+    return { artist: g.artist, date: latest.date, venue: venueOf(latest), price: latest.counts ? latest.price : null,
              total: g.shows, order: g.order }[key];
   }
 
@@ -136,10 +137,10 @@
     }
     const all = visible.flatMap((g) => g.concerts);
     stats.append(stat("concerts", visible.reduce((s, g) => s + g.shows, 0)), stat("artists", visible.length));
-    const priced = all.filter((c) => c.price !== null);
+    const priced = all.filter((c) => c.counts); // one entry per ticket, festivals counted once
     if (priced.length) {
       const spent = priced.reduce((s, c) => s + c.price, 0);
-      stats.append(stat("spent on listed tickets", `${spent.toFixed(2)} €`),
+      stats.append(stat("spent on tickets", `${spent.toFixed(2)} €`),
                    stat("average ticket", `${(spent / priced.length).toFixed(2)} €`));
     }
     stats.hidden = false;

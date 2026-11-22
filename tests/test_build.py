@@ -113,3 +113,37 @@ def test_contact_page_hides_form_until_configured(monkeypatch):
     assert "linkedin.com" in html  # always reachable
     assert ("contact-form" in html) == bool(site["contact"]["formspree_id"])
     assert "Contact me" in (build.DIST / "index.html").read_text(encoding="utf-8")
+
+
+def test_theme_toggle_on_every_page():
+    build.build(skip_notebooks=True)
+    for page in ("index.html", "cv/index.html", "concerts/index.html", "contact/index.html"):
+        html = (build.DIST / page).read_text(encoding="utf-8")
+        assert 'id="theme-toggle"' in html and "/js/theme.js" in html, page
+    assert (build.DIST / "js" / "theme.js").exists()
+
+
+def test_festival_ticket_is_counted_once(tmp_path, monkeypatch):
+    csv_text = (
+        "Artiste,Premiere partie,Nombre d'artistes,Nombre de concert,Commentaire,Date,Lieu,Co\u00fbt,Ville,Salle,Festival\n"
+        "Orelsan,,,1,,2024-06-20,,200,Clisson,,Hellfest\n"
+        "Gazo,,,1,,2024-06-21,,,Clisson,,hellfest\n"
+        "Vald,,,1,,2024-06-22,,200,Clisson,,Hellfest\n"
+        "Josman,,,1,,2023-06-20,,180,Clisson,,Hellfest\n"
+        "Dinos,,,1,,2024-09-01,,35,Paris,Olympia,\n"
+    )
+    (tmp_path / "data").mkdir()
+    (tmp_path / "data" / "concerts.csv").write_text(csv_text, encoding="utf-8")
+    monkeypatch.setattr(build, "ROOT", tmp_path)
+    by_artist = {g["artist"]: g["concerts"][0] for g in build.load_concerts()}
+    assert by_artist["Orelsan"]["counts"] and not by_artist["Orelsan"]["shared"]
+    assert (
+        not by_artist["Gazo"]["counts"] and by_artist["Gazo"]["shared"]
+    )  # no price, covered by Orelsan's
+    assert (
+        not by_artist["Vald"]["counts"] and by_artist["Vald"]["shared"]
+    )  # price repeated: ignored
+    assert by_artist["Josman"]["counts"]  # same festival, other year: its own ticket
+    assert by_artist["Dinos"]["counts"] and not by_artist["Dinos"]["shared"]  # normal concert
+    total = sum(c["price"] for c in by_artist.values() if c["counts"])
+    assert total == 200 + 180 + 35
