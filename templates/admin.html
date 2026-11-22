@@ -21,13 +21,14 @@
   <p id="status" role="status"></p>
 
   <div id="workspace" hidden>
-    <p>Keep rows in chronological order: for each artist the <strong>last row is the most recent concert</strong>.
-       Dates: <code>YYYY-MM-DD</code> or <code>DD/MM/YYYY</code>. Add one row per concert; leave
-       "Nombre de concert" empty on an artist's extra rows.
-       <strong>Festivals:</strong> type the festival name in the "Festival" column of every artist you saw there
-       (same name, same year) and put the ticket price on <em>one</em> row only: it is counted once.</p>
+    <p>One row per concert (same artist name every time). The site sorts by <strong>Date</strong>, most recent first,
+       so the row order is only for your comfort: keep the newest rows at the top. Dates:
+       <code>YYYY-MM-DD</code> or <code>DD/MM/YYYY</code>.
+       <strong>Festivals and shared tickets:</strong> type the same name in the "Festival" column of every row covered by
+       one ticket (same year) and put the price on <em>one</em> row only: it is counted once.</p>
     <div class="toolbar">
-      <button type="button" id="add-row">Add a row at the end</button>
+      <button type="button" id="add-row">Add a row at the top</button>
+      <button type="button" id="sort-rows">Sort by date (newest first)</button>
       <button type="button" id="download">Download CSV</button>
       <button type="button" id="save" class="primary">Save to GitHub</button>
     </div>

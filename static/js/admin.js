@@ -159,8 +159,28 @@
   }
 
   $("add-row").addEventListener("click", () => {
-    edit(() => rows.push(blankRow()));
-    grid.querySelector("tbody tr:last-child input").focus();
+    edit(() => rows.unshift(blankRow()));
+    grid.querySelector("tbody tr:first-child input").focus();
+  });
+
+  // Newest first; rows without a (valid) date go last; ties keep their current order (stable sort).
+  const isoDate = (v) => {
+    const t = v.trim();
+    if (!validDate(t)) return "";
+    const m = t.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4}|\d{2})$/);
+    return m ? `${m[3].length === 2 ? "20" + m[3] : m[3]}-${m[2].padStart(2, "0")}-${m[1].padStart(2, "0")}` : t;
+  };
+  $("sort-rows").addEventListener("click", () => {
+    const c = col("Date");
+    if (c < 0) return setStatus("There is no Date column to sort by.", true);
+    edit(() => rows.sort((a, b) => {
+      const x = isoDate(a[c]), y = isoDate(b[c]);
+      if (x === y) return 0;
+      if (!x) return 1;
+      if (!y) return -1;
+      return x < y ? 1 : -1;
+    }));
+    setStatus("Sorted by date, newest first. Don't forget to save.");
   });
 
   const csvText = () => CSVLite.serialize([header, ...rows.filter((row) => !isBlank(row))]);

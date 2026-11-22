@@ -18,7 +18,7 @@ Interactive mini-projects are written as **marimo** notebooks (`notebooks/<slug>
 ## Layout
 ```
 build.py            # entry point: data/ + templates/ -> dist/
-data/               # site.yaml, cv.yaml, projects.yaml, concerts.csv, admin.yaml (all content lives here)
+data/               # site.yaml, cv.yaml, projects.yaml, concerts.csv (columns Artiste,Date,Salle,Ville,Coût,Festival; one row per concert, newest first by convention; the site sorts by Date), concerts_old.csv (archive of the first messy version, not used), admin.yaml (all content lives here)
 templates/          # base.html, home.html, cv.html, projects.html, project.html
 static/             # css/, js/ (concerts.js), img/ (copied as-is to dist/; never put the CV PDF here)
 notebooks/          # one marimo notebook per interactive project

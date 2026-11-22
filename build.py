@@ -43,15 +43,18 @@ def parse_price(raw: str) -> float | None:
 
 
 def load_concerts() -> list[dict]:
-    """Concerts grouped by artist, ordered by each artist's most recent row in data/concerts.csv.
+    """Concerts grouped by artist, most recent first.
 
-    The CSV has one row per concert and is chronological (last row = most recent). Rows sharing an
-    artist name are grouped. "Nombre de concert" is the total number of shows for the artist (use
-    the highest value); concerts with no row of their own are reported as "undocumented".
+    data/concerts.csv has one row per concert. Rows sharing an artist name are grouped. Recency
+    comes from the Date column, not from the position in the file; rows without a date rank after
+    dated ones, and among equal dates the row that comes first in the file counts as more recent
+    (the file is kept newest first). Artists are ordered by their most recent concert.
+    "Nombre de concert" is optional: if present it is the artist's total number of shows (the
+    highest value wins), and concerts without a row of their own are reported as "undocumented".
     Skips test rows and rows whose count is explicitly 0.
 
     Festivals: rows with the same "Festival" name and the same year share ONE ticket. Its price is
-    counted once (the first row that has a price, in file order): that row gets counts=True, the
+    counted once (the first row of the file that has a price): that row gets counts=True, the
     other rows of the festival get shared=True (displayed as "festival ticket", not summed).
     """
     with (ROOT / "data" / "concerts.csv").open(encoding="utf-8", newline="") as f:
@@ -64,10 +67,9 @@ def load_concerts() -> list[dict]:
         if not artist or artist.lower().startswith("test") or raw_count == "0":
             continue
         group = groups.setdefault(
-            artist.casefold(), {"artist": artist, "declared": 0, "concerts": [], "order": 0}
+            artist.casefold(), {"artist": artist, "declared": 0, "concerts": []}
         )
         group["declared"] = max(group["declared"], int(raw_count or 1))
-        group["order"] = index
         date = parse_date(row.get("Date") or "")
         price = parse_price(row.get("Co\u00fbt") or "")
         festival = (row.get("Festival") or "").strip()
@@ -79,6 +81,7 @@ def load_concerts() -> list[dict]:
                 paid_festivals.add(key)
         group["concerts"].append(
             {
+                "index": index,
                 "date": date,
                 "venue": (row.get("Salle") or "").strip(),
                 "city": (row.get("Ville") or "").strip(),
@@ -88,25 +91,34 @@ def load_concerts() -> list[dict]:
                 "counts": counts,
             }
         )
+
+    def recency(concert: dict) -> tuple[str, int]:
+        return (concert["date"], -concert["index"])  # bigger = more recent
+
     result = []
-    for group in sorted(groups.values(), key=lambda g: g["order"]):
-        for c in group["concerts"]:
+    for group in groups.values():
+        concerts = sorted(group["concerts"], key=recency, reverse=True)
+        latest = recency(concerts[0])  # before the helper "index" field is dropped below
+        for c in concerts:
             # Another row of the same festival carries the ticket price.
             c["shared"] = (
                 bool(c["festival_key"]) and not c["counts"] and c["festival_key"] in paid_festivals
             )
-            del c["festival_key"]
-        concerts = group["concerts"][::-1]  # newest first
+            del c["festival_key"], c["index"]
         total = max(group["declared"], len(concerts))
         result.append(
             {
                 "artist": group["artist"],
-                "order": group["order"],
+                "_recency": latest,
                 "total": total,
                 "undocumented": total - len(concerts),
                 "concerts": concerts,
             }
         )
+    result.sort(key=lambda g: g["_recency"], reverse=True)
+    for rank, group in enumerate(result):
+        group["order"] = rank
+        del group["_recency"]
     return result
 
 

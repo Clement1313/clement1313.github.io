@@ -1,41 +1,25 @@
-Artiste,Premiere partie,Nombre d'artistes,Nombre de concert,Commentaire,Date,Lieu,Coût,Ville,Salle,Festival
-Orelsan ,3Pour100 + Jeanne To + Joyce Mena + Kay The Prodigy,4,4,Je recompte pas Jeanne To,,,,,,
-LauCarré,,LauCarré,1,,,,,,,
-Maxence,,Maxence,1,,,,,,,
-Chiloo,,Chiloo,1,,,,,,,
-BigFlo & Oli,Olympe Chabert,BigFlo & Oli,3,,,,,,,
-Vald,Charle BDL + Suikon BlazAD + Sirius + Sofian + Todiefor + Alkapote + Vladimir Cauchemard + Nono la Grinta + Damso + Orelsan,Vald,2,,,,,,,
-Luv Resval,,Luv Resval,0,,,,,,,
-Stromae,,Stromae,0,,,,,,,
-M,Rosedale,M,1,,,,,,,
-Lomepal,Keroue,Lomepal,2,,,,,,,
-Dinos,,Dinos,1,,,,,,,
-Larkin Poe,The Sheepdogs,Larkin Poe,2,,,,,,,
-Chilla,,Chilla,1,,,,,,,
-Dooms,,Dooms,1,,,,,,,
-Josman,,Josman,1,,,,,,,
-Maroon 5,,Maroon 5,1,,,,,,,
-Yame,,Yame,1,,,,,,,
-Royal Blood,,Royal Blood,1,,,,,,,
-Kaaris,,Kaaris,1,,,,,,,
-The Prodigy,,The Prodigy,1,,,,,,,
-Gazo,,Gazo,3,,,,,,,
-Lenny Kravitz,,Lenny Kravitz,1,,,,,,,
-Gringe,,Gringe,1,,,,,,,
-Sahareya,,Sahareya,1,,,,,,,
-Bertox,,Bertox,1,,,,,,,
-Luidji,Tuerie,Luidji,2,,,,,,,
-Tif,,Tif,1,,,,,,,
-SDM,,SDM,1,,,,,,,
-Last Train,,Last Train,1,,,,,,,
-Clara Luciani,,Clara Luciani,0,,,,,,,
-Theodora,,Theodora,1,,,,,,,
-Damso,,Damso,1,,,,,,,
-Justice,,Justice,1,,,,,,,
-Kendrik Lamar + SZA,Mustard,Kendrik Lamar + SZA,1,,,,,,,
-Franglish,,Franglish,1,,,,,,,
-Dadju,,Dadju,1,,,,,,,
-Jeanne To,Josy Basard,Jeanne To,1,,,,,,,
-Gims,DJ Benz,Gims,1,,,,,,,
-Riles,,Riles,1,,,,,,,
-Inji,Charlotte Plank,Inji,1,,2025-05-17,,"25,70",Paris,Centrale Chapelle,
+Artiste,Date,Salle,Ville,Coût,Festival
+BigFlo & Oli,2026-07-31,Théâtre de plein air - Parc Expo de Colmar,Colmar,48.00,"Foire aux Vins - BigFlo & Oli, Miki"
+Miki,2026-07-31,Théâtre de plein air - Parc Expo de Colmar,Colmar,,"Foire aux Vins - BigFlo & Oli, Miki"
+Vald,2026-07-03,Presqu'île du Malsaucy,Belfort,49.00,Eurockéennes de Belfort
+Orelsan,2026-07-03,Presqu'île du Malsaucy,Belfort,,Eurockéennes de Belfort
+Damso,2026-05-31,Paris La Défense Arena,Nanterre,59.00,
+Inji,2026-04-17,Central Chapelle,Paris,25.70,
+Orelsan,2026-03-06,Reims Arena,Reims,45.00,
+Orelsan,2026-01-29,Zénith Europe Strasbourg,Strasbourg,45.00,
+Riles,2026-01-23,Zénith Arena,Lille,44.00,
+Gims,2025-12-22,Paris La Défense Arena,Nanterre,60.00,
+Jeanne To,2025-12-19,La Maroquinerie,Paris,25.00,
+Vald,2025-11-29,Paris La Défense Arena,Nanterre,51.00,
+Gazo,2025-07-26,Théâtre de plein air - Parc Expo de Colmar,Colmar,50.00,Foire aux Vins - Gazo & Luidji
+Luidji,2025-07-26,Théâtre de plein air - Parc Expo de Colmar,Colmar,,Foire aux Vins - Gazo & Luidji
+Dadju,2025-07-25,Théâtre de plein air - Parc Expo de Colmar,Colmar,45.00,Foire aux Vins - Dadju & Franglish
+Franglish,2025-07-25,Théâtre de plein air - Parc Expo de Colmar,Colmar,,Foire aux Vins - Dadju & Franglish
+Kendrick Lamar & SZA,2025-07-16,Paris La Défense Arena,Nanterre,166.50,
+Last Train,2025-07-06,Presqu'île du Malsaucy,Belfort,,Eurockéennes de Belfort
+Damso,2025-07-06,Presqu'île du Malsaucy,Belfort,,Eurockéennes de Belfort
+Justice,2025-07-06,Presqu'île du Malsaucy,Belfort,,Eurockéennes de Belfort
+Tif,2025-07-05,Presqu'île du Malsaucy,Belfort,117.00,Eurockéennes de Belfort
+SDM,2025-07-05,Presqu'île du Malsaucy,Belfort,,Eurockéennes de Belfort
+Clara Luciani,2025-07-05,Presqu'île du Malsaucy,Belfort,,Eurockéennes de Belfort
+Theodora,2025-07-05,Presqu'île du Malsaucy,Belfort,,Eurockéennes de Belfort

@@ -34,21 +34,48 @@ def test_concerts_skip_test_and_zero_rows():
     assert "stromae" not in names  # 0 concerts
 
 
-def test_concerts_grouped_by_artist(tmp_path, monkeypatch):
-    csv_text = (
-        "Artiste,Premiere partie,Nombre d'artistes,Nombre de concert,Commentaire,Date,Lieu,Co\u00fbt,Ville,Salle\n"
-        "Gazo,,,3,,01/06/2023,,40,Paris,Accor\n"
-        "Vald,,,1,,,,,,\n"
-        "gazo ,,,,,2024-06-01,,60 \u20ac,Lyon,Halle\n"
-    )
-    (tmp_path / "data").mkdir()
+def _load_from_text(tmp_path, monkeypatch, csv_text):
+    (tmp_path / "data").mkdir(exist_ok=True)
     (tmp_path / "data" / "concerts.csv").write_text(csv_text, encoding="utf-8")
     monkeypatch.setattr(build, "ROOT", tmp_path)
-    vald, gazo = build.load_concerts()  # Gazo's latest row comes after Vald's
-    assert gazo["artist"] == "Gazo" and gazo["total"] == 3 and gazo["undocumented"] == 1
-    assert [c["date"] for c in gazo["concerts"]] == ["2024-06-01", "2023-06-01"]  # newest first
+    return build.load_concerts()
+
+
+HEADER = "Artiste,Date,Salle,Ville,Co\u00fbt,Festival,Nombre de concert\n"
+
+
+def test_concerts_sorted_by_date_most_recent_first(tmp_path, monkeypatch):
+    csv_text = HEADER + (
+        "Gazo,2023-06-01,Accor,Paris,40,,3\n"  # oldest Gazo; says 3 shows in total
+        "Vald,,,,,,\n"  # no date: ranks after every dated concert
+        "Dinos,2025-01-01,Olympia,Paris,35,,\n"
+        "gazo ,2024-06-01,Halle,Lyon,60 \u20ac,,\n"  # newer Gazo, name written differently
+    )
+    groups = _load_from_text(tmp_path, monkeypatch, csv_text)
+    assert [g["artist"] for g in groups] == ["Dinos", "Gazo", "Vald"]
+    assert [g["order"] for g in groups] == [0, 1, 2]
+    gazo = groups[1]
+    assert [c["date"] for c in gazo["concerts"]] == ["2024-06-01", "2023-06-01"]
     assert gazo["concerts"][0]["price"] == 60.0
-    assert vald["total"] == 1 and vald["undocumented"] == 0
+    assert gazo["total"] == 3 and gazo["undocumented"] == 1
+
+
+def test_row_order_in_file_does_not_change_the_result(tmp_path, monkeypatch):
+    lines = [
+        "Gazo,2023-06-01,Accor,Paris,40,,",
+        "Gazo,2024-06-01,Halle,Lyon,60,,",
+        "Dinos,2025-01-01,Olympia,Paris,35,,",
+    ]
+    forward = _load_from_text(tmp_path, monkeypatch, HEADER + "\n".join(lines) + "\n")
+    backward = _load_from_text(tmp_path, monkeypatch, HEADER + "\n".join(reversed(lines)) + "\n")
+    assert forward == backward
+    assert forward[0]["artist"] == "Dinos"
+
+
+def test_same_date_first_row_of_the_file_is_more_recent(tmp_path, monkeypatch):
+    csv_text = HEADER + "Gazo,2024-06-01,Halle,Lyon,60,,\nGazo,2024-06-01,Accor,Paris,40,,\n"
+    gazo = _load_from_text(tmp_path, monkeypatch, csv_text)[0]
+    assert [c["venue"] for c in gazo["concerts"]] == ["Halle", "Accor"]
 
 
 def test_parse_date_and_price():
