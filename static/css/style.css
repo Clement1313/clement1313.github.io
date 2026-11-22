@@ -239,3 +239,14 @@ table.editor td.actions button { padding: .15rem .6rem; margin-right: .2rem; }
   .home-grid { grid-template-columns: 1fr; }
   .music-card { --size: min(100%, 18rem); margin: 0 auto; width: 100%; max-width: 20rem; }
 }
+
+/* ---------- Contact form ---------- */
+.contact-form { max-width: 36rem; }
+.contact-form input, .contact-form textarea { width: 100%; font: inherit; color: var(--fg); background: var(--surface);
+  border: 1px solid var(--border); border-radius: 10px; padding: .55rem .75rem; margin-top: .3rem; display: block; }
+.contact-form textarea { resize: vertical; }
+.contact-form label small { display: block; color: var(--muted); font-weight: 400; }
+.contact-form .hp { position: absolute; left: -9999px; width: 1px; height: 1px; }
+.small { font-size: .85rem; }
+#contact-status.ok { color: var(--accent-2); }
+#contact-status.error { color: var(--danger); }

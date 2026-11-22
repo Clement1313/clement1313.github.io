@@ -9,11 +9,16 @@ url: https://clement1313.github.io
 links:
   - { label: GitHub, url: https://github.com/Clement1313 }
   - { label: LinkedIn, url: https://www.linkedin.com/in/clement-gregoire/ }
+contact:
+  # Messages are delivered by Formspree (free). Create a form at https://formspree.io, then paste
+  # its ID here (the part after /f/ in the form URL, e.g. xyzabcde). Leave empty to hide the form.
+  formspree_id: "meagrydo"
 nav:
   - { label: Home, path: / }
   - { label: Projects, path: /projects/ }
   - { label: Concerts, path: /concerts/ }
   - { label: CV, path: /cv/ }
+  - { label: Contact, path: /contact/ }
 highlights:
   - title: Concerts
     text: "Interactive stats on every concert I have been to: filter, sort and explore."

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<header class="page-head">
+  <h1>Contact</h1>
+  <p class="lead">Want to talk about a project, an idea or just say hi? Send me a message.</p>
+</header>
+
+{% set fid = site.contact.formspree_id if site.contact else "" %}
+{% if fid %}
+<form id="contact-form" class="panel contact-form" method="post" action="https://formspree.io/f/{{ fid }}">
+  <label>Your name <input name="name" autocomplete="name" required maxlength="100"></label>
+  <label>Your email <input name="email" type="email" autocomplete="email" required maxlength="200">
+    <small>Only used to reply to you.</small></label>
+  <label>Message <textarea name="message" rows="6" required minlength="10" maxlength="3000"></textarea></label>
+  <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <button type="submit" class="primary">Send message</button>
+  <p id="contact-status" role="status"></p>
+  <p class="muted small">Your message is delivered through <a href="https://formspree.io">Formspree</a> and goes straight to my inbox.</p>
+</form>
+<script src="{{ site.base_url }}/js/contact.js" defer></script>
+<p>Prefer another way? You can also reach me on
+{% else %}
+<p>You can reach me on
+{% endif %}
+{% for link in site.links %}{% if link.label == "LinkedIn" %}<a href="{{ link.url }}" rel="me">LinkedIn</a>{% endif %}{% endfor %}.</p>
+{% endblock %}

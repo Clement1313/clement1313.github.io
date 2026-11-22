@@ -102,3 +102,14 @@ def test_playlist_data_is_valid():
     build.build(skip_notebooks=True)
     html = (build.DIST / "index.html").read_text(encoding="utf-8")
     assert "music-frame" in html and "autoplay" not in html.replace("no autoplay", "")
+
+
+def test_contact_page_hides_form_until_configured(monkeypatch):
+    import yaml
+
+    site = yaml.safe_load((build.ROOT / "data" / "site.yaml").read_text())
+    build.build(skip_notebooks=True)
+    html = (build.DIST / "contact" / "index.html").read_text(encoding="utf-8")
+    assert "linkedin.com" in html  # always reachable
+    assert ("contact-form" in html) == bool(site["contact"]["formspree_id"])
+    assert "Contact me" in (build.DIST / "index.html").read_text(encoding="utf-8")

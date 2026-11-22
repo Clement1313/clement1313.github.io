@@ -138,6 +138,14 @@ def build(skip_notebooks: bool = False) -> None:
         json.loads(playlist_file.read_text(encoding="utf-8")) if playlist_file.exists() else None
     )
     write(env, "home.html", "index.html", **ctx, playlist=playlist, page_title=site["name"])
+    write(
+        env,
+        "contact.html",
+        "contact/index.html",
+        **ctx,
+        page_title="Contact",
+        page_description="Get in touch with me.",
+    )
     write(env, "cv.html", "cv/index.html", **ctx, cv=cv, page_title="CV")
     write(
         env, "projects.html", "projects/index.html", **ctx, projects=projects, page_title="Projects"
