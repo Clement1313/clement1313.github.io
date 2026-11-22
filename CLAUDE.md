@@ -18,7 +18,7 @@ Interactive mini-projects are written as **marimo** notebooks (`notebooks/<slug>
 ## Layout
 ```
 build.py            # entry point: data/ + templates/ -> dist/
-data/               # site.yaml, cv.yaml, projects.yaml, concerts.csv (all content lives here)
+data/               # site.yaml, cv.yaml, projects.yaml, concerts.csv, admin.yaml (all content lives here)
 templates/          # base.html, home.html, cv.html, projects.html, project.html
 static/             # css/, js/ (concerts.js), img/ (copied as-is to dist/; never put the CV PDF here)
 notebooks/          # one marimo notebook per interactive project
@@ -48,6 +48,11 @@ dist/               # generated, git-ignored
 - `main` is always deployable; one branch per feature or mini-project.
 - Short present-tense commit messages.
 - Before saying a page works: build it, serve `dist/` locally and check it renders with no console errors and no broken links.
+
+## Concerts admin page (`/concerts/admin/`)
+Static page, not linked in the nav, `noindex`. It edits `data/concerts.csv` by committing to GitHub through the GitHub API (fine-grained token entered at runtime, kept in memory only, never in the repo).
+- The password is only a client-side gate: `data/admin.yaml` holds a salted PBKDF2 hash (never the plaintext). Change it with `uv run python scripts/set_admin_password.py`. It does **not** protect the data (the CSV is public in the repo); the GitHub token is the real protection. Never write the password in code, docs or tests.
+- Validation rules in `static/js/admin.js` must match what `build.py` accepts (dates, counts, prices), because a bad value breaks the build.
 
 ## Project skills
 - `add-project`: add a mini-project (static or interactive marimo)

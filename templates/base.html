@@ -9,6 +9,7 @@
   <meta property="og:description" content="{{ page_description or site.description }}">
   <meta property="og:type" content="website">
   <link rel="stylesheet" href="{{ site.base_url }}/css/style.css">
+  {% block head %}{% endblock %}
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>

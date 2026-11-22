@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block head %}<meta name="robots" content="noindex, nofollow">{% endblock %}
+{% block content %}
+<h1>Concerts admin</h1>
+
+<form id="login" class="panel">
+  <label>Password <input type="password" id="login-password" autocomplete="current-password" required></label>
+  <button type="submit">Unlock</button>
+  <p id="login-error" role="alert" hidden>Wrong password.</p>
+</form>
+
+<section id="editor" hidden>
+  <div class="panel">
+    <p>Edits are committed straight to <code>{{ admin.path }}</code> on <code>{{ admin.repo }}</code>
+       ({{ admin.branch }}), which redeploys the site in a minute or two. This needs a GitHub
+       fine-grained token limited to this repository with <em>Contents: read and write</em>.
+       The token stays in this tab's memory only.</p>
+    <label>GitHub token <input type="password" id="gh-token" autocomplete="off" spellcheck="false"></label>
+    <button type="button" id="load">Load from GitHub</button>
+  </div>
+  <p id="status" role="status"></p>
+
+  <div id="workspace" hidden>
+    <p>Keep rows in chronological order: for each artist the <strong>last row is the most recent concert</strong>.
+       Dates: <code>YYYY-MM-DD</code> or <code>DD/MM/YYYY</code>. Add one row per concert; leave
+       "Nombre de concert" empty on an artist's extra rows.</p>
+    <div class="toolbar">
+      <button type="button" id="add-row">Add a row at the end</button>
+      <button type="button" id="download">Download CSV</button>
+      <button type="button" id="save" class="primary">Save to GitHub</button>
+    </div>
+    <ul id="problems" class="problems" hidden></ul>
+    <div class="table-wrap"><table class="data editor" id="grid"></table></div>
+  </div>
+</section>
+
+<script type="application/json" id="admin-config">{{ {"salt": admin.salt, "iterations": admin.iterations, "hash": admin.hash, "repo": admin.repo, "branch": admin.branch, "path": admin.path}|tojson }}</script>
+<script src="{{ site.base_url }}/js/csv.js"></script>
+<script src="{{ site.base_url }}/js/admin.js" defer></script>
+{% endblock %}

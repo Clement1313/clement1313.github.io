@@ -57,3 +57,37 @@ def test_parse_date_and_price():
     assert build.parse_date("2024-12-25") == "2024-12-25"
     assert build.parse_price("45,50 €") == 45.5
     assert build.parse_price("") is None
+
+
+def test_admin_config_stores_only_a_hash():
+    import re
+
+    import yaml
+
+    cfg = yaml.safe_load((build.ROOT / "data" / "admin.yaml").read_text())
+    assert re.fullmatch(r"[0-9a-f]{64}", cfg["hash"])
+    assert re.fullmatch(r"[0-9a-f]{32}", cfg["salt"])
+    assert cfg["iterations"] >= 100_000
+    assert "password" not in cfg
+
+
+def test_admin_page_is_noindex_and_not_in_nav():
+    import yaml
+
+    build.build(skip_notebooks=True)
+    html = (build.DIST / "concerts" / "admin" / "index.html").read_text()
+    assert "noindex" in html
+    nav = yaml.safe_load((build.ROOT / "data" / "site.yaml").read_text())["nav"]
+    assert all("admin" not in item["path"] for item in nav)
+
+
+def test_set_admin_password_hash_matches_algorithm():
+    import hashlib
+    import sys
+
+    sys.path.insert(0, str(build.ROOT / "scripts"))
+    import set_admin_password as sap
+
+    salt = bytes.fromhex("00" * 16)
+    expected = hashlib.pbkdf2_hmac("sha256", b"x", salt, 1000, dklen=32).hex()
+    assert sap.hash_password("x", salt, 1000) == expected

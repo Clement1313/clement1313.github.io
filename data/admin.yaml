@@ -1,0 +1,6 @@
+repo: Clement1313/clement1313.github.io
+branch: main
+path: data/concerts.csv
+salt: 012b39afb87a51e089ce7cc7f3bde86b
+iterations: 600000
+hash: 54b5171dd999d23c7252c71eae31cf218b932ff3f7cbf9d9defc6393ef9bbceb

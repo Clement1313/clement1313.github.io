@@ -143,6 +143,16 @@ def build(skip_notebooks: bool = False) -> None:
         page_title="Concerts",
         page_description="Interactive stats about the concerts I have been to.",
     )
+    admin_file = ROOT / "data" / "admin.yaml"
+    if admin_file.exists():
+        write(
+            env,
+            "admin.html",
+            "concerts/admin/index.html",
+            **ctx,
+            admin=yaml.safe_load(admin_file.read_text(encoding="utf-8")),
+            page_title="Concerts admin",
+        )
     for project in projects:
         write(
             env,
