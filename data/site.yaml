@@ -7,8 +7,19 @@ description: "Personal website of Clément Gregoire: CV and mini-projects."
 url: https://clement1313.github.io
 links:
   - { label: GitHub, url: https://github.com/Clement1313 }
+  - { label: LinkedIn, url: https://www.linkedin.com/in/clement-gregoire/ }
 nav:
   - { label: Home, path: / }
   - { label: Projects, path: /projects/ }
   - { label: Concerts, path: /concerts/ }
   - { label: CV, path: /cv/ }
+highlights:
+  - title: Concerts
+    text: "Interactive stats on every concert I have been to: filter, sort and explore."
+    path: /concerts/
+  - title: CV
+    text: "My background, experience and skills in image processing and machine learning."
+    path: /cv/
+  - title: Projects
+    text: "Small projects, some of them running live in the browser."
+    path: /projects/

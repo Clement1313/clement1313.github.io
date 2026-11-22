@@ -89,7 +89,10 @@ def load_concerts() -> list[dict]:
 def write(env: Environment, template: str, out: str, **ctx) -> None:
     path = DIST / out
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(env.get_template(template).render(**ctx), encoding="utf-8")
+    current = "/" + out.removesuffix("index.html")
+    path.write_text(
+        env.get_template(template).render(current_path=current, **ctx), encoding="utf-8"
+    )
 
 
 def export_notebook(slug: str) -> None:
@@ -129,7 +132,7 @@ def build(skip_notebooks: bool = False) -> None:
         autoescape=select_autoescape(["html"]),
     )
     ctx = {"site": site}
-    write(env, "home.html", "index.html", **ctx, projects=projects[:3], page_title=site["name"])
+    write(env, "home.html", "index.html", **ctx, page_title=site["name"])
     write(env, "cv.html", "cv/index.html", **ctx, cv=cv, page_title="CV")
     write(
         env, "projects.html", "projects/index.html", **ctx, projects=projects, page_title="Projects"

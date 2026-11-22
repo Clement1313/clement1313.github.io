@@ -8,20 +8,29 @@
   <meta property="og:title" content="{{ page_title }}">
   <meta property="og:description" content="{{ page_description or site.description }}">
   <meta property="og:type" content="website">
+  <meta name="color-scheme" content="light dark">
   <link rel="stylesheet" href="{{ site.base_url }}/css/style.css">
   {% block head %}{% endblock %}
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
   <header class="site-header">
-    <a class="brand" href="{{ site.base_url }}/">{{ site.name }}</a>
-    <nav aria-label="Main">
-      {% for item in site.nav %}<a href="{{ site.base_url }}{{ item.path }}">{{ item.label }}</a>{% endfor %}
-    </nav>
+    <div class="header-inner">
+      <a class="brand" href="{{ site.base_url }}/">{{ site.name }}</a>
+      <nav aria-label="Main">
+        {% for item in site.nav %}
+        {% set active = current_path == item.path or (item.path != "/" and current_path.startswith(item.path)) %}
+        <a href="{{ site.base_url }}{{ item.path }}"{% if active %} class="active" aria-current="page"{% endif %}>{{ item.label }}</a>
+        {% endfor %}
+      </nav>
+    </div>
   </header>
   <main id="main">{% block content %}{% endblock %}</main>
   <footer class="site-footer">
-    {% for link in site.links %}<a href="{{ link.url }}" rel="me">{{ link.label }}</a>{% endfor %}
+    <div class="footer-inner">
+      <span>&copy; {{ site.name }}</span>
+      <span class="footer-links">{% for link in site.links %}<a href="{{ link.url }}" rel="me">{{ link.label }}</a>{% endfor %}</span>
+    </div>
   </footer>
 </body>
 </html>

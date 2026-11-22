@@ -1,35 +1,56 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>{{ cv.title }}</h1>
-{% if cv.headline %}<p class="lead">{{ cv.headline }}</p>{% endif %}
-<p>{{ cv.summary }}</p>
-<ul class="contact">
-  {% for c in cv.contact %}<li><a href="{{ c.url }}">{{ c.label }}</a>: {{ c.text }}</li>{% endfor %}
-</ul>
-{% if cv.pdf %}<p><a href="{{ site.base_url }}/{{ cv.pdf }}" download>Download PDF</a></p>{% endif %}
-<h2>Experience</h2>
-{% for e in cv.experience %}
-<section class="entry">
-  <h3>{{ e.role }}, {{ e.company }} <small>{{ e.period }}</small></h3>
-  <ul>{% for pt in e.points %}<li>{{ pt }}</li>{% endfor %}</ul>
+<header class="page-head">
+  <h1>{{ cv.title }}</h1>
+  {% if cv.headline %}<p class="lead">{{ cv.headline }}</p>{% endif %}
+  <p>{{ cv.summary }}</p>
+  <p class="actions">
+    {% for c in cv.contact %}<a class="btn" href="{{ c.url }}" rel="me">{{ c.label }}</a>{% endfor %}
+    {% if cv.pdf %}<a class="btn primary" href="{{ site.base_url }}/{{ cv.pdf }}" download>Download PDF</a>{% endif %}
+  </p>
+</header>
+
+<section aria-labelledby="exp">
+  <h2 id="exp" class="section-title">Experience</h2>
+  <div class="timeline">
+    {% for e in cv.experience %}
+    <article class="entry">
+      <h3>{{ e.role }}</h3>
+      <p class="meta"><span>{{ e.company }}</span><span>{{ e.period }}</span></p>
+      <ul>{% for pt in e.points %}<li>{{ pt }}</li>{% endfor %}</ul>
+    </article>
+    {% endfor %}
+  </div>
 </section>
-{% endfor %}
-<h2>Education</h2>
-{% for e in cv.education %}
-<section class="entry">
-  <h3>{{ e.degree }}, {{ e.school }} <small>{{ e.period }}</small></h3>
-  {% if e.points %}<ul>{% for pt in e.points %}<li>{{ pt }}</li>{% endfor %}</ul>{% endif %}
+
+<section aria-labelledby="edu">
+  <h2 id="edu" class="section-title">Education</h2>
+  <div class="timeline">
+    {% for e in cv.education %}
+    <article class="entry">
+      <h3>{{ e.degree }}</h3>
+      <p class="meta"><span>{{ e.school }}</span><span>{{ e.period }}</span></p>
+      {% if e.points %}<ul>{% for pt in e.points %}<li>{{ pt }}</li>{% endfor %}</ul>{% endif %}
+    </article>
+    {% endfor %}
+  </div>
 </section>
-{% endfor %}
-<h2>Certifications</h2>
-<ul>{% for c in cv.certifications %}<li>{{ c }}</li>{% endfor %}</ul>
-<h2>Skills</h2>
-{% for s in cv.skills %}
-<p><strong>{{ s.group }}</strong></p>
-<p class="tags">{% for i in s.tags %}<span>{{ i }}</span>{% endfor %}</p>
-{% endfor %}
-<h2>Languages</h2>
-<ul>{% for l in cv.languages %}<li>{{ l.name }}: {{ l.level }}</li>{% endfor %}</ul>
-<h2>Interests</h2>
-<p class="tags">{% for i in cv.interests %}<span>{{ i }}</span>{% endfor %}</p>
+
+<div class="cols">
+  <section aria-labelledby="skills">
+    <h2 id="skills" class="section-title">Skills</h2>
+    {% for s in cv.skills %}
+    <p class="skill-group"><strong>{{ s.group }}</strong></p>
+    <p class="tags">{% for i in s.tags %}<span>{{ i }}</span>{% endfor %}</p>
+    {% endfor %}
+  </section>
+  <section aria-labelledby="more">
+    <h2 id="more" class="section-title">Languages</h2>
+    <ul class="plain">{% for l in cv.languages %}<li><strong>{{ l.name }}</strong> <span class="muted">{{ l.level }}</span></li>{% endfor %}</ul>
+    <h2 class="section-title">Certifications</h2>
+    <ul class="plain">{% for c in cv.certifications %}<li>{{ c }}</li>{% endfor %}</ul>
+    <h2 class="section-title">Interests</h2>
+    <p class="tags">{% for i in cv.interests %}<span>{{ i }}</span>{% endfor %}</p>
+  </section>
+</div>
 {% endblock %}

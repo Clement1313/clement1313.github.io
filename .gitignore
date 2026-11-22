@@ -7,3 +7,4 @@ __pycache__/
 data/CV.pdf
 data/*.pdf
 static/*.pdf
+data/token.txt

@@ -1,11 +1,26 @@
 {% extends "base.html" %}
 {% block content %}
 <section class="hero">
+  <p class="eyebrow">Hello, I'm</p>
   <h1>{{ site.name }}</h1>
   <p class="lead">{{ site.tagline }}</p>
+  <div class="actions">
+    <a class="btn primary" href="{{ site.base_url }}/cv/">View my CV</a>
+    <a class="btn" href="{{ site.base_url }}/concerts/">Explore my concerts</a>
+  </div>
+  <p class="social">
+    {% for link in site.links %}<a href="{{ link.url }}" rel="me">{{ link.label }}</a>{% endfor %}
+  </p>
 </section>
-<section>
-  <h2>Recent projects</h2>
-  {% include "_cards.html" %}
+<section aria-labelledby="explore">
+  <h2 id="explore" class="section-title">Explore</h2>
+  <ul class="cards">
+    {% for h in site.highlights %}
+    <li class="card">
+      <h3><a class="card-link" href="{{ site.base_url }}{{ h.path }}">{{ h.title }}</a></h3>
+      <p>{{ h.text }}</p>
+    </li>
+    {% endfor %}
+  </ul>
 </section>
 {% endblock %}
