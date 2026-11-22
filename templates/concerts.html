@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Concerts</h1>
+<p class="lead">Every concert I have been to, oldest first. For artists I saw several times, the latest show is displayed and the others are one click away.</p>
+
+<div class="controls" hidden data-js>
+  <label>Search <input type="search" id="concert-search" placeholder="Artist, venue, city"></label>
+  <label>Year <select id="concert-year"><option value="">All</option></select></label>
+</div>
+
+<div class="stats" id="concert-stats" aria-live="polite" hidden></div>
+<div class="charts" id="concert-charts" hidden></div>
+
+<div class="table-wrap">
+<table id="concert-table" class="data">
+  <thead>
+    <tr>
+      <th scope="col" data-sort="artist">Artist</th>
+      <th scope="col" data-sort="date">Date</th>
+      <th scope="col" data-sort="venue">Venue</th>
+      <th scope="col" data-sort="price" class="num">Ticket price</th>
+      <th scope="col" data-sort="total" class="num">Shows</th>
+    </tr>
+  </thead>
+  <tbody>
+    {# Fallback without JavaScript: latest show of each artist. The script replaces it. #}
+    {% for g in concerts %}{% set c = g.concerts[0] %}
+    <tr>
+      <th scope="row">{{ g.artist }}</th>
+      <td>{{ c.date or "—" }}</td>
+      <td>{{ c.venue or "—" }}{% if c.city %}, {{ c.city }}{% endif %}</td>
+      <td class="num">{% if c.price is not none %}{{ "%.2f"|format(c.price) }} €{% else %}—{% endif %}</td>
+      <td class="num">{{ g.total }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+<p id="concert-empty" hidden>No concert matches your filters.</p>
+<script type="application/json" id="concert-data">{{ concerts|tojson }}</script>
+<script src="{{ site.base_url }}/js/concerts.js" defer></script>
+{% endblock %}

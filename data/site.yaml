@@ -10,4 +10,5 @@ links:
 nav:
   - { label: Home, path: / }
   - { label: Projects, path: /projects/ }
+  - { label: Concerts, path: /concerts/ }
   - { label: CV, path: /cv/ }

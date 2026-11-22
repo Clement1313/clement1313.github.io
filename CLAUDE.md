@@ -18,9 +18,9 @@ Interactive mini-projects are written as **marimo** notebooks (`notebooks/<slug>
 ## Layout
 ```
 build.py            # entry point: data/ + templates/ -> dist/
-data/               # site.yaml, cv.yaml, projects.yaml (all content lives here)
+data/               # site.yaml, cv.yaml, projects.yaml, concerts.csv (all content lives here)
 templates/          # base.html, home.html, cv.html, projects.html, project.html
-static/             # css/, img/, cv.pdf (copied as-is to dist/)
+static/             # css/, js/ (concerts.js), img/ (copied as-is to dist/; never put the CV PDF here)
 notebooks/          # one marimo notebook per interactive project
 tests/
 .github/workflows/deploy.yml
