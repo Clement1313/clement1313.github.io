@@ -200,6 +200,8 @@ table.editor td.actions button { padding: .15rem .6rem; margin-right: .2rem; }
 .home-grid { width: 100%; display: grid; grid-template-columns: minmax(18rem, 1fr) auto; gap: clamp(1.5rem, 5vw, 4rem); align-items: center; }
 .home .hero { padding: 0 0 1.25rem; }
 .home .hero h1 { font-size: clamp(2.4rem, min(6.5vw, 9vh), 4.6rem); margin: .15rem 0 .6rem; }
+.nickname { margin: 0 0 .6rem; color: var(--accent); font-weight: 500; font-size: 1.05rem; }
+.nickname strong { font-weight: 700; }
 .home .lead { font-size: clamp(1rem, 2.2vh, 1.2rem); margin: 0; }
 .home .actions { margin-top: 1.1rem; }
 .home .social { margin-top: .9rem; }

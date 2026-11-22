@@ -6,6 +6,7 @@
     <section class="hero">
       <p class="eyebrow">Hello, I'm</p>
       <h1>{{ site.name }}</h1>
+      {% if site.nickname %}<p class="nickname">a.k.a. <strong>{{ site.nickname }}</strong></p>{% endif %}
       <p class="lead">{{ site.tagline }}</p>
       <div class="actions">
         <a class="btn primary" href="{{ site.base_url }}/cv/">View my CV</a>

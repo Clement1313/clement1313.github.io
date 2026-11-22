@@ -2,6 +2,7 @@
 # Use "/website" if the repo keeps the name "website" (site under /website/).
 base_url: ""
 name: Clément Gregoire
+nickname: Barberousse
 tagline: "Computer science engineering student specialising in image processing and AI."
 description: "Personal website of Clément Gregoire: CV and mini-projects."
 url: https://clement1313.github.io
