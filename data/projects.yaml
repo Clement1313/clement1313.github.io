@@ -1,0 +1,11 @@
+# One entry per mini-project. If interactive is true, notebooks/<slug>.py must exist.
+- slug: hello-marimo
+  title: Hello, marimo
+  summary: Example interactive project running Python in the browser.
+  description: >
+    Placeholder project showing how an interactive notebook is embedded.
+    Replace or delete it when you add real projects.
+  tags: [python, marimo]
+  repo: https://github.com/Clement1313/website
+  date: 2026-11-22
+  interactive: true

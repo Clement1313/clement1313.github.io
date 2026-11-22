@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% set page_description = project.summary %}
+{% block content %}
+<article>
+  <h1>{{ project.title }}</h1>
+  <p class="tags">{% for t in project.tags %}<span>{{ t }}</span>{% endfor %}</p>
+  <p>{{ project.description }}</p>
+  {% if project.repo %}<p><a href="{{ project.repo }}">Source code</a></p>{% endif %}
+  {% if project.interactive %}
+  <iframe class="app" title="{{ project.title }} (interactive)"
+          src="{{ site.base_url }}/projects/{{ project.slug }}/app/index.html" loading="lazy"></iframe>
+  {% endif %}
+</article>
+{% endblock %}

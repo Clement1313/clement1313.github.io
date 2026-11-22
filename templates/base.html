@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page_title }}{% if page_title != site.name %} | {{ site.name }}{% endif %}</title>
+  <meta name="description" content="{{ page_description or site.description }}">
+  <meta property="og:title" content="{{ page_title }}">
+  <meta property="og:description" content="{{ page_description or site.description }}">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="{{ site.base_url }}/css/style.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="{{ site.base_url }}/">{{ site.name }}</a>
+    <nav aria-label="Main">
+      {% for item in site.nav %}<a href="{{ site.base_url }}{{ item.path }}">{{ item.label }}</a>{% endfor %}
+    </nav>
+  </header>
+  <main id="main">{% block content %}{% endblock %}</main>
+  <footer class="site-footer">
+    {% for link in site.links %}<a href="{{ link.url }}" rel="me">{{ link.label }}</a>{% endfor %}
+  </footer>
+</body>
+</html>

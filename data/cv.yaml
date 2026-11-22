@@ -1,0 +1,19 @@
+# PLACEHOLDER content: replace with real information. Keep it public-safe (no phone/address).
+title: Curriculum Vitae
+summary: Short professional summary goes here.
+pdf: cv.pdf   # file in static/; remove this line if there is no PDF yet
+experience:
+  - role: Job title
+    company: Company
+    period: 2024 - Present
+    points:
+      - What you did and the result.
+education:
+  - degree: Degree
+    school: School
+    period: 2020 - 2024
+skills:
+  - Python
+languages:
+  - { name: French, level: Native }
+  - { name: English, level: Professional }

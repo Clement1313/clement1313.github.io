@@ -1,0 +1,13 @@
+# base_url: "" when the repo is named <user>.github.io (site at the root).
+# Use "/website" if the repo keeps the name "website" (site under /website/).
+base_url: ""
+name: Clement
+tagline: "Projects website"
+description: "Personal website of Clement: CV and mini-projects."
+url: https://clement1313.github.io
+links:
+  - { label: GitHub, url: https://github.com/Clement1313 }
+nav:
+  - { label: Home, path: / }
+  - { label: Projects, path: /projects/ }
+  - { label: CV, path: /cv/ }
