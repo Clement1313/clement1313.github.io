@@ -18,7 +18,7 @@ Interactive mini-projects are written as **marimo** notebooks (`notebooks/<slug>
 ## Layout
 ```
 build.py            # entry point: data/ + templates/ -> dist/
-data/               # site.yaml, cv.yaml, projects.yaml, concerts.csv (columns Artiste,Date,Salle,Ville,Coût,Festival; one row per concert, newest first by convention; the site sorts by Date), concerts_old.csv (archive of the first messy version, not used), admin.yaml (all content lives here)
+data/               # site.yaml, cv.yaml, projects.yaml, concerts.csv (columns Artiste,Date,Salle,Ville,Coût,Festival; one row per concert, newest first by convention; the site sorts by Date), concerts_old.csv (archive of the first messy version, not used), admin.yaml (repo/branch/path the admin page commits to; all content lives here)
 templates/          # base.html, home.html, cv.html, projects.html, project.html
 static/             # css/, js/ (concerts.js), img/ (copied as-is to dist/; never put the CV PDF here)
 notebooks/          # one marimo notebook per interactive project
@@ -51,7 +51,7 @@ dist/               # generated, git-ignored
 
 ## Concerts admin page (`/concerts/admin/`)
 Static page, not linked in the nav, `noindex`. It edits `data/concerts.csv` by committing to GitHub through the GitHub API (fine-grained token entered at runtime, kept in memory only, never in the repo).
-- The password is only a client-side gate: `data/admin.yaml` holds a salted PBKDF2 hash (never the plaintext). Change it with `uv run python scripts/set_admin_password.py`. It does **not** protect the data (the CSV is public in the repo); the GitHub token is the real protection. Never write the password in code, docs or tests.
+- There is no password: a static site cannot check one, and the CSV is public anyway. The GitHub token is the real protection (without it nobody can read-modify-write the file), so it must be a fine-grained token limited to this repo with *Contents: read and write*. Never put a token in the repo (`data/token.txt` is git-ignored).
 - Validation rules in `static/js/admin.js` must match what `build.py` accepts (dates, counts, prices), because a bad value breaks the build.
 
 ## Music widget (home page)

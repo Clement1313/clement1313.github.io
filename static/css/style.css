@@ -201,11 +201,11 @@ tr.sub th { font-weight: 400; padding-left: 1.6rem; }
 .panel label { display: block; margin-bottom: .6rem; font-weight: 500; }
 .panel input { width: min(100%, 26rem); display: block; margin-top: .3rem; }
 .toolbar { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0; }
-#status.error, #login-error, .problems { color: var(--danger); }
+#status.error, .problems { color: var(--danger); }
 table.editor input { width: 100%; min-width: 7rem; padding: .3rem .45rem; border-radius: 8px; }
 table.editor input[aria-invalid="true"] { border-color: var(--danger); outline: 1px solid var(--danger); }
-table.editor td.actions { white-space: nowrap; }
-table.editor td.actions button { padding: .15rem .6rem; margin-right: .2rem; }
+table.editor td.row-actions { white-space: nowrap; }
+table.editor td.row-actions button { padding: .15rem .6rem; margin-right: .2rem; }
 
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; scroll-behavior: auto !important; }

@@ -9,26 +9,6 @@
     status.textContent = msg;
     status.className = isError ? "error" : "";
   };
-  const hexToBytes = (hex) => Uint8Array.from(hex.match(/../g).map((h) => parseInt(h, 16)));
-  const bytesToHex = (buf) => [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
-
-  // --- Password gate (client-side only: a convenience, not real security; GitHub enforces the token) ---
-  async function passwordOk(password) {
-    const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveBits"]);
-    const bits = await crypto.subtle.deriveBits(
-      { name: "PBKDF2", salt: hexToBytes(cfg.salt), iterations: cfg.iterations, hash: "SHA-256" }, key, 256);
-    return bytesToHex(bits) === cfg.hash;
-  }
-  $("login").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const ok = await passwordOk($("login-password").value);
-    $("login-error").hidden = ok;
-    if (ok) {
-      $("login").hidden = true;
-      $("editor").hidden = false;
-      $("login-password").value = "";
-    }
-  });
 
   // --- GitHub API ---
   const apiUrl = `https://api.github.com/repos/${cfg.repo}/contents/${cfg.path}`;
@@ -148,7 +128,7 @@
         tr.insertCell().append(input);
       });
       const actions = tr.insertCell();
-      actions.className = "actions";
+      actions.className = "row-actions";
       actions.append(
         button("↑", `Move row ${r + 1} up`, () => r > 0 && edit(() => rows.splice(r - 1, 0, rows.splice(r, 1)[0]))),
         button("↓", `Move row ${r + 1} down`, () => r < rows.length - 1 && edit(() => rows.splice(r + 1, 0, rows.splice(r, 1)[0]))),

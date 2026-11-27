@@ -3,13 +3,7 @@
 {% block content %}
 <h1>Concerts admin</h1>
 
-<form id="login" class="panel">
-  <label>Password <input type="password" id="login-password" autocomplete="current-password" required></label>
-  <button type="submit">Unlock</button>
-  <p id="login-error" role="alert" hidden>Wrong password.</p>
-</form>
-
-<section id="editor" hidden>
+<section id="editor">
   <div class="panel">
     <p>Edits are committed straight to <code>{{ admin.path }}</code> on <code>{{ admin.repo }}</code>
        ({{ admin.branch }}), which redeploys the site in a minute or two. This needs a GitHub
@@ -37,7 +31,7 @@
   </div>
 </section>
 
-<script type="application/json" id="admin-config">{{ {"salt": admin.salt, "iterations": admin.iterations, "hash": admin.hash, "repo": admin.repo, "branch": admin.branch, "path": admin.path}|tojson }}</script>
+<script type="application/json" id="admin-config">{{ {"repo": admin.repo, "branch": admin.branch, "path": admin.path}|tojson }}</script>
 <script src="{{ site.base_url }}/js/csv.js"></script>
 <script src="{{ site.base_url }}/js/admin.js" defer></script>
 {% endblock %}

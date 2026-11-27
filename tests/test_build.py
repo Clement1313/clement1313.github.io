@@ -86,16 +86,11 @@ def test_parse_date_and_price():
     assert build.parse_price("") is None
 
 
-def test_admin_config_stores_only_a_hash():
-    import re
-
+def test_admin_config_only_says_where_to_commit():
     import yaml
 
     cfg = yaml.safe_load((build.ROOT / "data" / "admin.yaml").read_text())
-    assert re.fullmatch(r"[0-9a-f]{64}", cfg["hash"])
-    assert re.fullmatch(r"[0-9a-f]{32}", cfg["salt"])
-    assert cfg["iterations"] >= 100_000
-    assert "password" not in cfg
+    assert set(cfg) == {"repo", "branch", "path"}  # no secret or credential of any kind
 
 
 def test_admin_page_is_noindex_and_not_in_nav():
@@ -106,18 +101,6 @@ def test_admin_page_is_noindex_and_not_in_nav():
     assert "noindex" in html
     nav = yaml.safe_load((build.ROOT / "data" / "site.yaml").read_text())["nav"]
     assert all("admin" not in item["path"] for item in nav)
-
-
-def test_set_admin_password_hash_matches_algorithm():
-    import hashlib
-    import sys
-
-    sys.path.insert(0, str(build.ROOT / "scripts"))
-    import set_admin_password as sap
-
-    salt = bytes.fromhex("00" * 16)
-    expected = hashlib.pbkdf2_hmac("sha256", b"x", salt, 1000, dklen=32).hex()
-    assert sap.hash_password("x", salt, 1000) == expected
 
 
 def test_playlist_data_is_valid():
@@ -174,3 +157,13 @@ def test_festival_ticket_is_counted_once(tmp_path, monkeypatch):
     assert by_artist["Dinos"]["counts"] and not by_artist["Dinos"]["shared"]  # normal concert
     total = sum(c["price"] for c in by_artist.values() if c["counts"])
     assert total == 200 + 180 + 35
+
+
+def test_admin_page_has_no_password_gate():
+    build.build(skip_notebooks=True)
+    html = (build.DIST / "concerts" / "admin" / "index.html").read_text(encoding="utf-8")
+    assert (
+        'id="login"' not in html and "login-password" not in html and "Wrong password" not in html
+    )
+    assert 'id="gh-token"' in html  # the GitHub token is the only protection
+    assert 'id="editor" hidden' not in html  # the editor is shown straight away
